@@ -1,3 +1,4 @@
+
 const {Schema, model} = require('mongoose')
 
 const blogSchema = new Schema({
@@ -21,5 +22,6 @@ const blogSchema = new Schema({
     
 }, { timestamps: true })
 
+const Blog = model('Blog', blogSchema)
 
-module.exports = model('Blog', blogSchema);
+module.exports  = Blog;

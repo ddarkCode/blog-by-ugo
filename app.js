@@ -1,24 +1,27 @@
 require('dotenv').config();
 
-const express = require('express');
-const morgan = require('morgan');
-const ejs = require('ejs');
-const mongoose = require('mongoose')
 
-const blogRoutes = require('./routes/blogsRouter')
+
+
+const express = require('express');
+const logger = require('morgan');
+const ejs = require('ejs');
+const {connect} = require('mongoose')
+
+const blogRoutes = require('./routes/blogRoutes');
+
+
 const log = console.log;
 
-const { MONGODB_URL} = process.env;
-const PORT = process.env.PORT || 3000
+const { MONGO} = process.env;
+const PORT = process.env.PORT || 9000
 
-(async function connectToDatabase(){
-  try {
-    await mongoose.connect(MONGODB_URL)
-    log('Connection To Mongodb Established Successfully')
-  } catch (error) {
-    log(`An Error Occurred While Trying To Connect To Mongodb ${JSON.stringify(error)}`);
-  }
-}())
+
+connect(MONGO).then( () => {
+  log('Database Connected Successfully.')
+}).catch(err => {
+  log(`An Error Occurred While Connecting To Database ${JSON.stringify(err)}`);
+})
 
 const app = express();
 
@@ -28,7 +31,7 @@ app.set('views', 'views')
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
+app.use(logger('dev'));
 
 
 
@@ -43,12 +46,6 @@ app.get('/contact', (req, res) => {
 
 
 app.use('/', blogRoutes());
-
-
-
-// app.get('/',(req, res) => {
-//   res.render('index', {startingContent, posts})
-// })
 
 
 

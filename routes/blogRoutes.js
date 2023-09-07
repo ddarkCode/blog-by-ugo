@@ -1,8 +1,9 @@
 const {Router} = require('express')
 
-const {formatDate} = require('../utils/formatDate')
 
-const Blog = require('../database/blogModel');
+const Blog = require('../database/blogModel')
+const formatDate = require('../utils/formatDate')
+
 const log = console.log;
 
 
@@ -46,15 +47,11 @@ const BlogRoutes = () => {
     .get(async (req, res) => {
         const {blogId} = req.params;
         try {
-            const foundBlog = await Blog.findById(blogId);
-            if (!foundBlog) {
-                res.status(404);
-                return res.json({message: 'Blog Not Found.'})
-            }
-            const date = foundBlog.createdAt ?  formatDate(foundBlog.createdAt) : '';
-            foundBlog.date = date;
-            res.status(200);
-            return res.render('post', {foundBlog});
+           const foundBlog = await Blog.findOne({_id: blogId})
+           foundBlog.date = formatDate(foundBlog.createdAt);
+           log(foundBlog)
+           res.status(200);
+           return res.render('post', {foundBlog})
         } catch (error) {
             res.status(500);
             return res.json({message: 'Internal Server error', error});
