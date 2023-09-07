@@ -8,7 +8,8 @@ const mongoose = require('mongoose')
 const blogRoutes = require('./routes/blogsRouter')
 const log = console.log;
 
-const {PORT, MONGODB_URL} = process.env;
+const { MONGODB_URL} = process.env;
+const PORT = process.env.PORT || 3000
 
 (async function connectToDatabase(){
   try {
