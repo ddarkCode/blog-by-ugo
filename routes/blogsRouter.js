@@ -1,72 +1,77 @@
-const {Router} = require('express');
+const {Router} = require('express')
 
-const blogs = require('../blogs/blogs')
+const {formatDate} = require('../utils/formatDate')
+
+const Blog = require('../database/blogModel');
 const log = console.log;
 
-module.exports = function blogsRouter(){
 
-    const blogsRouter = Router();
+const BlogRoutes = () => {
+    const blogRouter = Router();
 
-    
-    blogsRouter.route('/')
+    blogRouter.route('/')
+    .get(async (req, res) => {
+        try {
+            const blogs = await Blog.find({});
+            res.status(200);
+            return res.render('index', {blogs});
+        } catch (error) {
+            res.status(500);
+            return res.redirect('/');
+        }
+    })
+
+    blogRouter.route('/blogs/compose')
     .get((req, res) => {
         res.status(200);
-        res.json(blogs);
+        return res.render('compose');
     })
-    .post((req, res) => {
-        const {title, content, author} = req.body;
-        const newBlogPost = {
-            id: blogs.length + 1,
-            title,
-            content,
-            author,
-            date: new Date()
+    .post(async (req, res) => {
+        const {title, description, author, content} = req.body;
+
+        try {
+            const newBlog = new Blog({
+                title, content, description, author
+            })
+            await newBlog.save();
+            res.status(201);
+            return res.redirect('/');
+        } catch (error) {
+            res.status(500);
+            return res.json({message: 'An Error Occurred While Saving Your Blog.', error});
         }
-        blogs.push(newBlogPost);
-        log(blogs)
-        res.status(201);
-        return res.json(newBlogPost);
     })
 
-    blogsRouter.route('/:id')
-    .get( (req, res) => {
-        const {id} = req.params;
-        const blog = blogs.find(post => post.id === +id);
-        
-        if (!blog) {
-            res.status(404);
-            return res.json({message: 'Blog Not Found!'})
-        } else {
-            res.status(200);
-            return res.json(blog)
-        }
-    })
-    .patch((req, res) => {
-        const blog = blogs.find(blog => blog.id === +req.params.id);
-        log(req.params.id)
-        log(blog)
-        if (!blog) {
-            res.status(404)
-            return res.json({message: 'Blog Not Found!'})
-        }
-        const updatedBlog = Object.assign({}, blog, req.body)
-        blogs.push(updatedBlog);
-        res.status(201);
-        return res.json(updatedBlog);
-    })
-    .delete((req, res) => {
-        
-            const blogIndex = blogs.findIndex(blog => blog.id === +req.params.id);
-            if (blogIndex !== -1) {
-                blogs.splice(blogIndex, 1);
-                res.status(200);
-                return res.json({message: 'Blog Deleted Successfully.'});
+    blogRouter.route('/blogs/:blogId')
+    .get(async (req, res) => {
+        const {blogId} = req.params;
+        try {
+            const foundBlog = await Blog.findById(blogId);
+            if (!foundBlog) {
+                res.status(404);
+                return res.json({message: 'Blog Not Found.'})
             }
-            res.status(404);
-            return res.json({message: 'Blog Not Found!'})
-
-       
+            const date = foundBlog.createdAt ?  formatDate(foundBlog.createdAt) : '';
+            foundBlog.date = date;
+            res.status(200);
+            return res.render('post', {foundBlog});
+        } catch (error) {
+            res.status(500);
+            return res.json({message: 'Internal Server error', error});
+        }
+    })
+    .delete(async (req, res) => {
+        const {blogId} = req.params;
+        try {
+            await Blog.findByIdAndDelete(blogId);
+            res.status(200);
+            return res.redirect('/');
+        } catch (error) {
+            
+        }
     })
 
-    return blogsRouter;
+    return blogRouter;
 }
+
+module.exports = BlogRoutes;
