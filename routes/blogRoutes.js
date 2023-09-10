@@ -15,7 +15,7 @@ const BlogRoutes = () => {
         try {
             const blogs = await Blog.find({});
             res.status(200);
-            return res.render('index', {blogs});
+            return res.render('index', {blogs, user: req.user});
         } catch (error) {
             res.status(500);
             return res.redirect('/');
@@ -24,8 +24,12 @@ const BlogRoutes = () => {
 
     blogRouter.route('/blogs/compose')
     .get((req, res) => {
-        res.status(200);
-        return res.render('compose');
+        if (req.isAuthenticated()) {
+            res.status(200);
+        return res.render('compose', {user: req.user});
+        }
+        res.status(302);
+        return res.redirect('/auth/login');
     })
     .post(async (req, res) => {
         const {title, description, author, content} = req.body;
@@ -49,7 +53,6 @@ const BlogRoutes = () => {
         try {
            const foundBlog = await Blog.findOne({_id: blogId})
            foundBlog.date = formatDate(foundBlog.createdAt);
-           log(foundBlog)
            res.status(200);
            return res.render('post', {foundBlog})
         } catch (error) {
