@@ -1,0 +1,36 @@
+.auth {
+  height: 80vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth h1 {
+  margin: 0;
+  margin-bottom: 30px;
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.auth-container form {
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container form button {
+  height: 40px;
+  outline: none;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  background-color: #04364a;
+  color: #fff;
+  border: none;
+}
+
+.auth-container form button:hover {
+  background-color: #fff;
+  color: #04364a;
+}

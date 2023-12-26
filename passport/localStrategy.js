@@ -1,49 +1,68 @@
-const passport = require('passport');
-const {Strategy} = require('passport-local');
+import passport from 'passport';
+import { Strategy } from 'passport-local';
 
-const User = require('../database/user');
+import debug from 'debug';
 
+import User from '../database/user';
+const log = debug('index:localStrategy');
 
-module.exports = function localStrategy() {
-    passport.use('register', new Strategy(
-        {
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true
-        },
-        async (req, email, password, done) => {
-            console.log('Passport Done Function: ', done);
-            try {
-                const user = await User.create({email, password, username: req.body.username});
-                return done(null, user, {message: "Successful Registration."});
-            } catch (err) {
-                return done(err, false)
-            }
+export default function localStrategy() {
+  passport.use(
+    'signup',
+    new Strategy(
+      {
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true,
+      },
+      async (req, email, password, done) => {
+        try {
+          const foundUser = await User.findOne({ email });
+
+          if (foundUser) {
+            throw new Error('User With This Email Already Exist.');
+          }
+
+          const user = new User({
+            email,
+            password,
+            username: req.body.username,
+          });
+
+          await user.save();
+
+          return done(null, user, { message: 'Successful Registration.' });
+        } catch (err) {
+          return done(err, false);
         }
-    ));
- 
-    passport.use('login', new Strategy(
-        {
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true
-        },
-        async (req, email, password, done) => {
-            try {
-            
-                const user = await User.findOne({email})
-                if (!user) {
-                    return done(null, false, {'message': 'User Not Found.'});
-                }
+      }
+    )
+  );
 
-                if (!user.confirmPassword(password)) {
-                    return done(null, false, {message: 'Wrong Password Provided.'})
-                }
+  passport.use(
+    'login',
+    new Strategy(
+      {
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true,
+      },
+      async (req, email, password, done) => {
+        try {
+          const user = await User.findOne({ email });
+          if (!user) {
+            throw new Error('User Not Found.');
+          }
 
-                return done(null, user, {message: 'Successfully Logged In.'})
-            } catch (err) {
-                return done(null, false, {message: `An Error Occurred While Logging In: ${JSON.stringify(err)}`});
-            }
+          if (!user.confirmPassword(password)) {
+            throw new Error('Wrong Password Provided.');
+          }
+
+          return done(null, user, { message: 'Successfully Logged In.' });
+        } catch (err) {
+          return done(err, false);
         }
-    ))
+      }
+    )
+  );
 }

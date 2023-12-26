@@ -1,77 +1,124 @@
-const {Router} = require('express')
+import { Router } from 'express';
 
-
-const Blog = require('../database/blogModel')
-const formatDate = require('../utils/formatDate')
-
-const log = console.log;
-
+import blogController from '../controllers/blogController';
+import Blog from '../database/blogModel';
+import Comment from '../database/commentModel';
 
 const BlogRoutes = () => {
-    const blogRouter = Router();
+  const blogRouter = Router();
+  const { getAllBlogs, getASingleBlog, updateABlog, postNewBlog, deleteABlog } =
+    blogController;
 
-    blogRouter.route('/')
-    .get(async (req, res) => {
-        try {
-            const blogs = await Blog.find({});
-            res.status(200);
-            return res.render('index', {blogs, user: req.user});
-        } catch (error) {
-            res.status(500);
-            return res.redirect('/');
-        }
-    })
+  blogRouter.route('/').get(getAllBlogs).post(postNewBlog);
 
-    blogRouter.route('/blogs/compose')
-    .get((req, res) => {
+  blogRouter
+    .route('/:blogId')
+    .get(getASingleBlog)
+    .patch(updateABlog)
+    .delete(deleteABlog);
+
+  blogRouter
+    .route('/:blogId/likes')
+    .post(async (req, res, next) => {
+      const { blogId } = req.params;
+      try {
         if (req.isAuthenticated()) {
-            res.status(200);
-        return res.render('compose', {user: req.user});
-        }
-        res.status(302);
-        return res.redirect('/auth/login');
-    })
-    .post(async (req, res) => {
-        const {title, description, author, content} = req.body;
+          const foundBlog = await Blog.findOne({ _id: blogId });
 
-        try {
-            const newBlog = new Blog({
-                title, content, description, author
-            })
-            await newBlog.save();
-            res.status(201);
-            return res.redirect('/');
-        } catch (error) {
-            res.status(500);
-            return res.json({message: 'An Error Occurred While Saving Your Blog.', error});
+          if (!foundBlog.likes.includes(req.user._id)) {
+            foundBlog.likes.push(req.user._id);
+            await foundBlog.save();
+          }
+          return res.json(foundBlog);
+        } else {
+          throw new Error('You Must Login To Perform This Operation.');
         }
+      } catch (err) {
+        next(err);
+      }
     })
+    .delete(async (req, res, next) => {
+      const { blogId } = req.params;
+      try {
+        if (req.isAuthenticated()) {
+          const foundBlog = await Blog.findOne({ _id: blogId });
 
-    blogRouter.route('/blogs/:blogId')
-    .get(async (req, res) => {
-        const {blogId} = req.params;
-        try {
-           const foundBlog = await Blog.findOne({_id: blogId})
-           foundBlog.date = formatDate(foundBlog.createdAt);
-           res.status(200);
-           return res.render('post', {foundBlog})
-        } catch (error) {
-            res.status(500);
-            return res.json({message: 'Internal Server error', error});
+          if (foundBlog.likes.includes(req.user._id)) {
+            const indexLoc = foundBlog.likes.findIndex(
+              (id) => id.toString() === req.user._id.toString()
+            );
+            foundBlog.likes.splice(indexLoc, 1);
+
+            await foundBlog.save();
+          }
+
+          return res.status(200).json(foundBlog);
+        } else {
+          throw new Error('You Must Login To Perform This Operation.');
         }
-    })
-    .delete(async (req, res) => {
-        const {blogId} = req.params;
-        try {
-            await Blog.findByIdAndDelete(blogId);
-            res.status(200);
-            return res.redirect('/');
-        } catch (error) {
-            
+      } catch (err) {
+        next(err);
+      }
+    });
+
+  blogRouter.route('/:blogId/comments').post(async (req, res, next) => {
+    try {
+      if (req.isAuthenticated()) {
+        const foundBlog = await Blog.findOne({ _id: req.params.blogId });
+        const newComment = new Comment({
+          ...req.body,
+          authorId: req.user._id,
+          author: req.user.username,
+          createdAt: new Date(),
+          time: `
+           ${new Date().getHours().toLocaleString()}: ${new Date()
+            .getMinutes()
+            .toLocaleString()}`,
+        });
+        foundBlog.comments.push(newComment);
+        await foundBlog.save();
+        return res.status(201).json(foundBlog);
+      } else {
+        throw new Error('You Must Login To Perform This Operation.');
+      }
+    } catch (err) {
+      next(err);
+    }
+  });
+  blogRouter
+    .route('/:blogId/comments/:commentId')
+    .delete(async (req, res, next) => {
+      try {
+        const { blogId, commentId } = req.params;
+        if (req.isAuthenticated()) {
+          const foundBlog = await Blog.findOne({ _id: blogId });
+          const { comments } = foundBlog;
+          const commentToDelete = comments.find(
+            (c) => c._id.toString() === commentId.toString()
+          );
+          if (commentToDelete) {
+            if (
+              commentToDelete.authorId.toString() === req.user._id.toString()
+            ) {
+              const filteredComments = comments.filter(
+                (co) => co._id.toString() !== commentId.toString()
+              );
+              foundBlog.comments = filteredComments;
+              await foundBlog.save();
+              return res.status(200).json(foundBlog);
+            } else {
+              throw new Error('You Are Not Authorized Perform This Operation.');
+            }
+          }
+        } else {
+          throw new Error('You Must Login To Perform This Operation.');
         }
-    })
+      } catch (err) {
+        next(err);
+      }
+    });
 
-    return blogRouter;
-}
+  return blogRouter;
+};
 
-module.exports = BlogRoutes;
+export default BlogRoutes;

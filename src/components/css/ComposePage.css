@@ -1,0 +1,31 @@
+.compose-page {
+  padding: 0 50px;
+  margin-bottom: 100px;
+}
+
+.compose-page h1 {
+  font-weight: 600;
+  font-size: 20px;
+  border-bottom: 1px solid #04364a;
+}
+
+.compose-page form {
+  display: flex;
+  flex-direction: column;
+}
+
+.compose-page button {
+  height: 50px;
+  background-color: #04364a;
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.compose-page button:hover {
+  border: 1px solid #04364a;
+  background-color: #fff;
+  color: #04364a;
+}

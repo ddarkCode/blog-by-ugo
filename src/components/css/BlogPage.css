@@ -1,0 +1,58 @@
+.blog-main-page {
+  padding: 0 50px;
+  min-height: 80vh;
+}
+
+.blog-main-page h1 {
+  font-size: 21px;
+  font-weight: 700;
+  padding-bottom: 5px;
+}
+
+.blog-main-page > .author-detail {
+  margin: 10px 0;
+  font-style: italic;
+}
+
+.blog-main-page > .author-detail h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.blog-main-page > .author-detail p {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+.blog-main-page > .paragraphs {
+  font-size: 18px;
+  font-weight: 400;
+}
+.blog-main-page > .paragraphs p {
+  margin-bottom: 20px;
+}
+
+.reaction-icons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.reaction-icons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.reaction-icons button:nth-child(2) {
+  background: none;
+  border: 1px solid #04364a;
+  margin-left: 20px;
+  width: 50px;
+  height: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+  .blog-main-page {
+    padding: 0 20px;
+  }
+}

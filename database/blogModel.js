@@ -1,27 +1,43 @@
+import { Schema, model } from 'mongoose';
 
-const {Schema, model} = require('mongoose')
-
-const blogSchema = new Schema({
+const blogSchema = new Schema(
+  {
     title: {
-        type: String,
-        min: 20,
-        required: [true, 'Please Provide The Title of Your Post']
+      type: String,
+      min: 20,
+      required: [true, 'Please Provide The Title of Your Post'],
     },
     description: {
-        type: String,
-        required: [true, 'Please Provide The Description of Your Post']
+      type: String,
+      required: [true, 'Please Provide The Description of Your Post'],
     },
-    content: {
-        type: String,
-        required: [true, 'Please Provide Content For Your Post']
+    para1: {
+      type: String,
+      required: [true, 'Please Provide Content For Your Post'],
     },
-    author: {
-        type: String,
-        default: "Jane Doe"
+    para2: {
+      type: String,
+      required: [true, 'Please Provide Content For Your Post'],
     },
-    
-}, { timestamps: true })
+    para3: {
+      type: String,
+      required: [true, 'Please Provide Content For Your Post'],
+    },
+    comments: {
+      type: Array,
+      default: [],
+    },
+    likes: {
+      type: Array,
+      default: [],
+    },
+    authorId: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
 
-const Blog = model('Blog', blogSchema)
+const Blog = model('Blog', blogSchema);
 
-module.exports  = Blog;
+export default Blog;

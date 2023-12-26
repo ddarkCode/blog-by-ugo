@@ -1,0 +1,27 @@
+.about-page {
+  min-height: 70vh;
+  padding: 0 50px;
+}
+
+.about-page h1 {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 1.8;
+  line-height: 1.8;
+}
+.about-page p {
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 1.8;
+  line-height: 1.5;
+}
+.about-content {
+  margin-bottom: 20px;
+}
+p span {
+  font-style: italic;
+  font-weight: 700;
+  font-size: 18px;
+  margin-right: 10px;
+  border-bottom: 3px solid #04364a;
+}

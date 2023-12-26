@@ -1,0 +1,20 @@
+.text-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.text-area label {
+  font-size: 18px;
+  font-weight: 500;
+  font-style: italic;
+  margin: 5px 0;
+}
+
+.text-area textarea {
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #04364a;
+}

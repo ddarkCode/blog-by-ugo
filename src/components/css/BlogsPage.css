@@ -1,0 +1,15 @@
+.blogs-page {
+  padding: 0 50px;
+  min-height: 100vh;
+}
+
+.blogs-page h1 {
+  font-size: 21px;
+  font-weight: 900;
+}
+
+@media only screen and (max-width: 600px) {
+  .blogs-page {
+    padding: 0 20px;
+  }
+}

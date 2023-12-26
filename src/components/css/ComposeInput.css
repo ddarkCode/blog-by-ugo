@@ -1,0 +1,21 @@
+.compose-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.compose-input label {
+  font-size: 18px;
+  font-weight: 500;
+  font-style: italic;
+  margin: 5px 0;
+}
+
+.compose-input input {
+  height: 40px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #04364a;
+}
