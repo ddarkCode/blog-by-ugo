@@ -1,15 +1,14 @@
-const {resolve} = require('path');
-const webpackNodeExternals = require('webpack-node-externals')
-
+const { resolve } = require('path');
+const webpackNodeExternals = require('webpack-node-externals');
 
 module.exports = {
   target: 'node',
-  mode: 'development',
+  mode: 'production',
 
   entry: './index.js',
   output: {
-    filename: 'bundle.js',
-    path: resolve(__dirname, 'build')
+    filename: 'app.js',
+    path: resolve(__dirname),
   },
   module: {
     rules: [
@@ -20,15 +19,18 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-transform-runtime']
-          }
-        }
+            plugins: [
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-transform-runtime',
+            ],
+          },
+        },
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
-    ]
+    ],
   },
-  externals: [webpackNodeExternals()]
-}
+  externals: [webpackNodeExternals()],
+};
