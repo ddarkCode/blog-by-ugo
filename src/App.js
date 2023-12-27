@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { renderRoutes } from 'react-router-config';
 import { useDispatch } from 'react-redux';
 
-import { updateAuthOnPageLoad, getProfile } from './redux/auth/authReducer';
+import { getProfile } from './redux/auth/authReducer';
 
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -12,12 +12,6 @@ function App({ route }) {
 
   useEffect(() => {
     dispatch(getProfile());
-
-    // const user = localStorage.getItem('auth');
-
-    // if (user) {
-    //   dispatch(updateAuthOnPageLoad(user));
-    // }
   }, [dispatch]);
 
   return (

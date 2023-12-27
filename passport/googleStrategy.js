@@ -16,7 +16,8 @@ export default function googleStrategy() {
       {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:9000/api/auth/google/authenticate',
+        callbackURL:
+          'https://ublog-fw5w.onrender.com/api/auth/google/authenticate',
         passReqToCallback: true,
       },
       function (req, accessToken, refreshToken, profile, done) {
