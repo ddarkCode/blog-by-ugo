@@ -2,12 +2,14 @@ import passport from 'passport';
 import { Router } from 'express';
 import debug from 'debug';
 
+import userValidator from '../validators/userValidator';
+
 const log = debug('index:authRoutes');
 
 export default function authRoutes() {
   const authRouter = Router();
 
-  authRouter.route('/auth/signup').post((req, res, next) => {
+  authRouter.route(userValidator, '/auth/signup').post((req, res, next) => {
     passport.authenticate('signup', (err, user, info, status) => {
       if (err) {
         next(err);

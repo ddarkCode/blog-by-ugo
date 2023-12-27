@@ -61,6 +61,8 @@ function Login() {
               type={'password'}
               name={'password'}
               onChange={handleChange}
+              min={8}
+              placeholder={'Minimum of 8 alphanumeric characters'}
             />
             <FormButton text={'Login'} />
           </Form>

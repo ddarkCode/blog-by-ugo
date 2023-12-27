@@ -8,6 +8,9 @@ import Input from '../components/Input';
 import Form from '../components/Form';
 import FormButton from '../components/FormButton';
 import GoogleButton from '../components/GoogleButton';
+
+import '../components/css/Form.css';
+
 function Signup() {
   const [user, setUser] = useState({
     username: '',
@@ -42,7 +45,7 @@ function Signup() {
   }
 
   return (
-    <div className="auth">
+    <div className="auth" id="signup">
       <h1>Signup</h1>
 
       <div>
@@ -65,6 +68,8 @@ function Signup() {
               type={'password'}
               name={'password'}
               onChange={handleChange}
+              min={8}
+              placeholder={'Minimum of 8 alphanumeric characters'}
             />
             <FormButton text={'Signup'} />
           </Form>
