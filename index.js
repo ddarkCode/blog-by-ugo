@@ -22,7 +22,7 @@ import Routes from './src/Routes';
 const log = debug('index');
 const MongoStore = MongoDBStoreSession(session);
 
-const { MONGO_LOCAL, SESSION_SECRET, FRONTEND_URL } = process.env;
+const { MONGO_LOCAL, MONGO_CLOUD, SESSION_SECRET, FRONTEND_URL } = process.env;
 
 const PORT = process.env.PORT || 9000;
 
@@ -38,7 +38,7 @@ app.use(
 app.use(
   session({
     store: new MongoStore({
-      url: MONGO_LOCAL,
+      url: MONGO_CLOUD,
     }),
     secret: SESSION_SECRET,
     resave: false,
@@ -95,7 +95,7 @@ app.listen(PORT, () => {
 
   (async function connectDatabase() {
     try {
-      await connect(MONGO_LOCAL);
+      await connect(MONGO_CLOUD);
       log('Database Connected Successfully.');
     } catch (err) {
       log(

@@ -10,6 +10,8 @@ import User from '../database/user';
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
 const log = debug('index:googleStrategy');
 
+console.log(process.env.GOOGLE_CLIENT_ID);
+console.log(process.env.GOOGLE_CLIENT_SECRET);
 export default function googleStrategy() {
   passport.use(
     new GoogleStrategy(
@@ -23,6 +25,7 @@ export default function googleStrategy() {
       function (req, accessToken, refreshToken, profile, done) {
         console.log(process.env.GOOGLE_CLIENT_ID);
         console.log(process.env.GOOGLE_CLIENT_SECRET);
+        //https://ublog-fw5w.onrender.com
         User.findOrCreate(
           {
             googleId: profile.id,
