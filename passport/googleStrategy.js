@@ -14,14 +14,15 @@ export default function googleStrategy() {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: GOOGLE_CLIENT_ID,
-        clientSecret: GOOGLE_CLIENT_SECRET,
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL:
           'https://ublog-fw5w.onrender.com/api/auth/google/authenticate',
         passReqToCallback: true,
       },
       function (req, accessToken, refreshToken, profile, done) {
-        log(profile);
+        console.log(process.env.GOOGLE_CLIENT_ID);
+        console.log(process.env.GOOGLE_CLIENT_SECRET);
         User.findOrCreate(
           {
             googleId: profile.id,
