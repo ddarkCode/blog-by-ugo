@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet';
 
 import { getblogs } from '../redux/blogs/blogsSlice';
 import BlogList from '../components/BlogList';
-import helmet from '../components/Helmet';
 
 import '../components/css/BlogsPage.css';
 
@@ -20,7 +20,13 @@ function Blogs() {
 
   return (
     <div className="blogs-page">
-      {helmet('ublog', 'Blogs Page')}
+      <Helmet>
+        <title>Blogs Page</title>
+        <meta
+          name="description"
+          content={`${blogs && blogs.length} blogs loaded`}
+        />
+      </Helmet>
       <h1>Explore Stories And Thinking On A Variety Of Topics</h1>
       {blogs.length === 0 ? (
         <h2 style={{ textAlign: 'center', height: '80vh', marginTop: '200px' }}>

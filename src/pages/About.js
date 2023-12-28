@@ -1,13 +1,18 @@
 import React from 'react';
-
-import helmet from '../components/Helmet';
+import { Helmet } from 'react-helmet';
 
 import '../components/css/About.css';
 
 function About() {
   return (
     <div className="about-page">
-      {helmet('ublog', 'About Page')}
+      <Helmet>
+        <title>About Page</title>
+        <meta
+          name="description"
+          content="We're Changing The Way People Think About Blogging"
+        />
+      </Helmet>
       <h1>We're Changing The Way People Think About Blogging</h1>
       <p className="about-content">
         {' '}

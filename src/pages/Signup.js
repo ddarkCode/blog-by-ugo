@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import { signup } from '../redux/auth/authReducer';
 
@@ -8,7 +9,6 @@ import Input from '../components/Input';
 import Form from '../components/Form';
 import FormButton from '../components/FormButton';
 import GoogleButton from '../components/GoogleButton';
-import helmet from '../components/Helmet';
 
 import '../components/css/Form.css';
 
@@ -47,7 +47,10 @@ function Signup() {
 
   return (
     <div className="auth" id="signup">
-      {helmet('ublog', 'Signup Page')}
+      <Helmet>
+        <title>Signup Page</title>
+        <meta name="description" content="Register To Start Creating Blogs" />
+      </Helmet>
       <h1>Signup</h1>
 
       <div>

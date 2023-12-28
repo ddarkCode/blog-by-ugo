@@ -32,5 +32,5 @@ module.exports = {
       },
     ],
   },
-  externals: [webpackNodeExternals()],
+  externals: [webpackNodeExternals(), 'react-helmet'],
 };

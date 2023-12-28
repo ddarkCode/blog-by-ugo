@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import TextArea from '../components/TextArea';
 import ComposeInput from '../components/ComposeInput';
 import { postAblog } from '../redux/blogs/blogsSlice';
-
-import helmet from '../components/Helmet';
 
 import '../components/css/ComposePage.css';
 
@@ -41,7 +40,10 @@ function Compose() {
   };
   return (
     <div className="compose-page">
-      {helmet('ublog', 'Compose')}
+      <Helmet>
+        <title>Compose Page</title>
+        <meta name="description" content={`Add New Blog To Blogs Collection`} />
+      </Helmet>
       <h1>Compose</h1>
       <form onSubmit={handleSubmit}>
         <ComposeInput

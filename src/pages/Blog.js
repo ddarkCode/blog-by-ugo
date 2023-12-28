@@ -3,17 +3,15 @@ import { useParams, Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { capitalize } from 'lodash';
 import { X } from 'react-bootstrap-icons';
+import { Helmet } from 'react-helmet';
 
 import {
   getblog,
   deleteblog,
   likeBlog,
   unlikeBlog,
-  addComment,
-  deleteComment,
 } from '../redux/blogs/blogsSlice';
 import { formatDate } from '../../utils/formatDate';
-import helmet from '../components/Helmet';
 
 import '../components/css/BlogPage.css';
 import CommentList from '../components/CommentList';
@@ -58,7 +56,10 @@ function Blog() {
 
   return (
     <div className="blogs-page blog-main-page">
-      {helmet('ublog', `${title ? title : 'Blog'}`)}
+      <Helmet>
+        <title>Blog Page</title>
+        <meta name="description" content={`${title}`} />
+      </Helmet>
       {Object.keys(blog).length === 0 ? (
         <h2 style={{ textAlign: 'center', height: '80vh', marginTop: '200px' }}>
           Loading

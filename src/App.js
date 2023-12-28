@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { renderRoutes } from 'react-router-config';
 import { useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet';
 
 import { getProfile } from './redux/auth/authReducer';
 
@@ -16,6 +17,11 @@ function App({ route }) {
 
   return (
     <div>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>ublog</title>
+        <link rel="canonical" href="https://ublog-fw5w.onrender.com/" />
+      </Helmet>
       <Header />
       {renderRoutes(route.routes)}
       <Footer />

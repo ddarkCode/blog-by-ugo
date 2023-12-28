@@ -20,19 +20,22 @@ export default function renderer(req, store, context) {
 
   return `
   <!DOCTYPE html>
-  <html lang="en" dir="ltr">
+  <html lang="en" dir="ltr" ${helmet.htmlAttributes.toString()}>
   
   <head>
     <meta charset="utf-8">
     <title>uBlog</title>
     <meta charset="utf-8">
-     ${helmet.title.toString()}
-    ${helmet.meta.toString()}
+    
+            ${helmet.title.toString()}
+            ${helmet.meta.toString()}
+            ${helmet.link.toString()}
+    
     <link rel="stylesheet" href="/styles/styles.css">
    </head>
        
   
-  <body>
+  <body ${helmet.bodyAttributes.toString()}>
       <div id="root">${stringContent}</div>
 
     <footer class="footer">
