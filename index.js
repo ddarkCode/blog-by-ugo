@@ -7,9 +7,10 @@ import logger from 'morgan';
 import debug from 'debug';
 import { connect } from 'mongoose';
 import session from 'express-session';
-import MongoDBStoreSession from 'connect-mongodb-session';
+import MongoDBStore from 'connect-mongodb-session';
 import cors from 'cors';
 import { matchRoutes } from 'react-router-config';
+import { rateLimit } from 'express-rate-limit';
 
 import errorHandler from './middlewares/errorHandler';
 import passportConfig from './passport';
@@ -20,13 +21,23 @@ import { createStore } from './helpers/configureStore';
 import Routes from './src/Routes';
 
 const log = debug('index');
-const MongoStore = MongoDBStoreSession(session);
-
+const MongoDBStoreSession = MongoDBStore(session);
 const { MONGO_LOCAL, MONGO_CLOUD, SESSION_SECRET, FRONTEND_URL } = process.env;
 
 const PORT = process.env.PORT || 9000;
 
 const app = express();
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  validate: { trustProxy: false },
+});
+const mongoSessionStore = new MongoDBStoreSession({
+  uri: process.env.MONGO_CLOUD,
+  collection: 'ublogDbSessions',
+});
 
 app.use(
   cors({
@@ -37,12 +48,13 @@ app.use(
 
 app.use(
   session({
-    store: new MongoStore({
-      url: MONGO_CLOUD,
-    }),
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: mongoSessionStore,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7 * 4 * 12,
+    },
   })
 );
 
@@ -54,6 +66,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
+app.use(limiter);
 
 app.use('/api', authRoutes());
 app.use('/api/blogs', blogRoutes());
