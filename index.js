@@ -37,9 +37,9 @@ app.use(
 
 app.use(
   session({
-    // store: new MongoStore({
-    //   url: MONGO_CLOUD,
-    // }),
+    store: new MongoStore({
+      url: MONGO_CLOUD,
+    }),
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
