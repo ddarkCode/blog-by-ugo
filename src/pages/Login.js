@@ -8,6 +8,7 @@ import Input from '../components/Input';
 import FormButton from '../components/FormButton';
 import Form from '../components/Form';
 import GoogleButton from '../components/GoogleButton';
+import helmet from '../components/Helmet';
 
 import '../components/css/Form.css';
 
@@ -45,6 +46,7 @@ function Login() {
 
   return (
     <div className="auth">
+      {helmet('ublog', 'Login Page')}
       <h1>Login</h1>
 
       <div>

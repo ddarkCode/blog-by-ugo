@@ -13,6 +13,7 @@ import {
   deleteComment,
 } from '../redux/blogs/blogsSlice';
 import { formatDate } from '../../utils/formatDate';
+import helmet from '../components/Helmet';
 
 import '../components/css/BlogPage.css';
 import CommentList from '../components/CommentList';
@@ -57,6 +58,7 @@ function Blog() {
 
   return (
     <div className="blogs-page blog-main-page">
+      {helmet('ublog', `${title ? title : 'Blog'}`)}
       {Object.keys(blog).length === 0 ? (
         <h2 style={{ textAlign: 'center', height: '80vh', marginTop: '200px' }}>
           Loading

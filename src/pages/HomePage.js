@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import helmet from '../components/Helmet';
+
 import '../components/css/HomePage.css';
 
 const HomePage = () => {
   return (
     <div className="home-page">
+      {helmet('ublog', 'Discover Stories')}
       <h1>Curious? Discover Stories And Thinking On A Variety Of Topics.</h1>
       <h3>Welcome to Ublog: Your Voice, Amplified</h3>
       <p>

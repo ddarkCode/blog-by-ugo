@@ -6,6 +6,8 @@ import TextArea from '../components/TextArea';
 import ComposeInput from '../components/ComposeInput';
 import { postAblog } from '../redux/blogs/blogsSlice';
 
+import helmet from '../components/Helmet';
+
 import '../components/css/ComposePage.css';
 
 function Compose() {
@@ -39,6 +41,7 @@ function Compose() {
   };
   return (
     <div className="compose-page">
+      {helmet('ublog', 'Compose')}
       <h1>Compose</h1>
       <form onSubmit={handleSubmit}>
         <ComposeInput

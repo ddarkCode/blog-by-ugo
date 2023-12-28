@@ -1,10 +1,13 @@
 import React from 'react';
 
+import helmet from '../components/Helmet';
+
 import '../components/css/Contact.css';
 
 function Contact() {
   return (
     <div className="contact-page">
+      {helmet('ublog', 'Contact Page')}
       <h1>We'd Love To Here From You.</h1>
       <div className="contact-container">
         <p className="contact-content">

@@ -9,6 +9,7 @@ import Blog from './pages/Blog';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Compose from './pages/Compose';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default [
   {
@@ -47,6 +48,9 @@ export default [
       {
         path: '/contact',
         component: Contact,
+      },
+      {
+        component: NotFoundPage,
       },
     ],
   },
