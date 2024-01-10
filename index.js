@@ -75,11 +75,6 @@ app.use('/api/blogs', blogRoutes());
 app.get('*', (req, res) => {
   const blogId = req.originalUrl.split('/')[2];
 
-  // let userId;
-  // if (req.user) {
-  //   userId = req.user._id;
-  // }
-
   const store = createStore();
   const promises = matchRoutes(Routes, req.path).map(({ route, match }) => {
     return route.loadData

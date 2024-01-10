@@ -5,7 +5,6 @@ const commentSchemma = new Schema({
   authorId: String,
   author: String,
   createdAt: Date,
-  time: String,
 });
 
 export default model('Comment', commentSchemma);

@@ -7,7 +7,7 @@ import BlogList from '../components/BlogList';
 
 import '../components/css/BlogsPage.css';
 
-function Blogs() {
+function BlogsPage() {
   const blogs = useSelector((state) => state.blogs.blogs);
 
   const dispatch = useDispatch();
@@ -28,20 +28,19 @@ function Blogs() {
         />
       </Helmet>
       <h1>Explore Stories And Thinking On A Variety Of Topics</h1>
+
       {blogs.length === 0 ? (
         <h2 style={{ textAlign: 'center', height: '80vh', marginTop: '200px' }}>
           Loading
         </h2>
       ) : (
-        blogs.map(function (blog) {
-          return <BlogList key={blog._id} {...blog} />;
-        })
+        <BlogList blogs={blogs} />
       )}
     </div>
   );
 }
 
 export default {
-  component: Blogs,
+  component: BlogsPage,
   loadData: (store) => store.dispatch(getblogs()),
 };

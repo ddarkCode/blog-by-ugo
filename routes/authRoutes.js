@@ -9,7 +9,7 @@ const log = debug('index:authRoutes');
 export default function authRoutes() {
   const authRouter = Router();
 
-  authRouter.route(userValidator, '/auth/signup').post((req, res, next) => {
+  authRouter.route('/auth/signup').post(userValidator, (req, res, next) => {
     passport.authenticate('signup', (err, user, info, status) => {
       if (err) {
         next(err);

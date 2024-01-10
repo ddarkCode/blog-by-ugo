@@ -16,7 +16,7 @@ import { formatDate } from '../../utils/formatDate';
 import '../components/css/BlogPage.css';
 import CommentList from '../components/CommentList';
 
-function Blog() {
+function BlogPage() {
   const { blogId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -70,7 +70,8 @@ function Blog() {
           <div className="author-detail">
             <h3>{capitalize(description)} </h3>
             <p> {capitalize(username)} </p>
-            <p>{formatDate(createdAt)}</p>
+            <p>{formatDate(createdAt).date}</p>
+            <p>{formatDate(createdAt).time}</p>
           </div>
           <div className="paragraphs">
             <p>{para1}</p>
@@ -118,6 +119,6 @@ function Blog() {
 }
 
 export default {
-  component: Blog,
+  component: BlogPage,
   loadData: (store, blogId) => store.dispatch(getblog(blogId)),
 };

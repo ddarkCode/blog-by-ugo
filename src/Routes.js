@@ -4,8 +4,8 @@ import App from './App';
 import HomePage from './pages/HomePage';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Blogs from './pages/Blogs';
-import Blog from './pages/Blog';
+import BlogsPage from './pages/BlogsPage';
+import BlogPage from './pages/BlogPage';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Compose from './pages/Compose';
@@ -35,11 +35,11 @@ export default [
       {
         path: '/blogs',
         exact: true,
-        ...Blogs,
+        ...BlogsPage,
       },
       {
         path: '/blogs/:blogId',
-        ...Blog,
+        ...BlogPage,
       },
       {
         path: '/about',

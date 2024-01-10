@@ -1,14 +1,17 @@
 import debug from 'debug';
 
+import CustomError from './CustomError';
+
 const log = debug('index:errorHandler');
 
 export default function errorHandler(err, req, res, next) {
   if (res.headersSent) {
     return next(err);
   }
+  const error = new CustomError(
+    err.message || 'Internal server error',
+    err.status || 500
+  );
 
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal server error';
-
-  return res.status(statusCode).json({ message });
+  return res.status(error.status).json(error);
 }

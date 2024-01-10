@@ -6,5 +6,8 @@ export const formatDate = (date) => {
     month: 'long',
     day: 'numeric',
   };
-  return dateOb.toLocaleDateString('en-US', options);
+  return {
+    date: dateOb.toLocaleDateString('en-US', options),
+    time: dateOb.toLocaleTimeString(),
+  };
 };

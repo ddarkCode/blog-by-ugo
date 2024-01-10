@@ -5,17 +5,18 @@ import { X } from 'react-bootstrap-icons';
 import { formatDate } from '../../utils/formatDate';
 import { deleteComment } from '../redux/blogs/blogsSlice';
 
-function Comment({ message, createdAt, time, author, _id, authorId, blogId }) {
+function Comment({ message, createdAt, author, _id, authorId, blogId }) {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
   let status = user && user._id === authorId;
+  const { date, time } = formatDate(createdAt);
   return (
     <div className="comment">
       <div>
         <span>{author}</span>
         {':'}
-        <span>{formatDate(createdAt)}</span> {'  '}
+        <span>{date}</span> {'  '}
         <span>{time}</span>
       </div>
       <p>{message}</p>

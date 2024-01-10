@@ -22,7 +22,6 @@ export const getblog = createAsyncThunk(
 export const postAblog = createAsyncThunk(
   'blogs/post_a_blog',
   async (blogObj, thunkApi) => {
-    console.log(blogObj);
     const { data } = await axios.post(`${baseUrl}/blogs`, blogObj);
     return data;
   }
