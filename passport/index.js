@@ -1,6 +1,5 @@
 import passport from 'passport';
 
-import User from '../database/user';
 import localStrategy from './localStrategy';
 import googleStrategy from './googleStrategy';
 
@@ -14,10 +13,9 @@ export default async function (app) {
 
   passport.deserializeUser(async (user, done) => {
     try {
-      const foundUser = await User.findOne({ email: user.email });
-      return done(null, foundUser);
+      return done(null, user);
     } catch (err) {
-      done(null, false, { message: err });
+      return done(err, false);
     }
   });
 
